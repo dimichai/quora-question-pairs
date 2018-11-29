@@ -108,3 +108,9 @@ venv.bak/
 data/
 
 submissions/
+
+models/deep/nn_one_dense_layer\.h5
+
+models/xgboost/xgb_trained\.model
+
+models/xgboost/xgboost_tfidf\.model

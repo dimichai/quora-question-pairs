@@ -25,6 +25,13 @@ def get_vectors(*strs):
     vectorizer.fit(text)
     return vectorizer.transform(text).toarray()
 
+def get_length_features(data):
+    data['q1_len'] = data.question1.apply(lambda x: len(str(x)))
+    data['q2_len'] = data.question2.apply(lambda x: len(str(x)))
+    # data['len_diff'] = data.q1_len - data.q2_len
+
+    return data
+
 def get_jaccard_sim(entry):
     q1 = entry['question1']
     q2 = entry['question2']

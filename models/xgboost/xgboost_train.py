@@ -18,6 +18,11 @@ train_data['same_words_fraction'] = train.apply(feature_extractor.same_words_fra
 # Jacard similarity
 train_data['jacard_similarity'] = train.apply(feature_extractor.get_jaccard_sim, axis=1, raw=True)
 
+# Length features
+length_features = feature_extractor.get_length_features(train)
+train_data['q1_len'] = length_features['q1_len']
+train_data['q2_len'] = length_features['q2_len']
+# train_data['len_diff'] = length_features['len_diff']
 # # Create Vectors
 # vectors_q1 = train['question1'].apply(feature_extractor.get_vectors)
 # vectors_q2 = train['question2'].apply(feature_extractor.get_vectors)
@@ -36,10 +41,10 @@ dtest = xgb.DMatrix(x_test, y_test)
 params = {}
 params['objective'] = 'binary:logistic'
 params['eval_metric'] = 'error'
-params['eta'] = 0.02
-params['max_depth'] = 4
-params['min_child_weight'] = 1
+params['eta'] = 0.1
+params['max_depth'] = 15
+params['min_child_weight'] = 2
 
-model = xgb.train(params, dtrain, 400, [(dtrain, 'train'), (dtest, 'validation')], early_stopping_rounds=100, verbose_eval=10)
+model = xgb.train(params, dtrain, 400, [(dtrain, 'train'), (dtest, 'validation')], early_stopping_rounds=100, verbose_eval=50)
 # model.dump_model('./models/xgboost/xgb_trained.raw.txt')
 model.save_model('./models/xgboost/xgb_trained.model')
