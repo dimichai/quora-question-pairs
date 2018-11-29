@@ -14,13 +14,17 @@ test['question2'] = test['question2'].apply(data_cleaner.clean_text)
 test['question1'] = test['question1'].apply(data_cleaner.remove_stopwords)
 test['question2'] = test['question2'].apply(data_cleaner.remove_stopwords)
 
-# Some text only contained not-needed information, get rid of it.
-test = test[(test.question1 != ' ') & (test.question2 != ' ')]
-test = test[(test.question1 != '') & (test.question2 != '')]
-
+# Feature Creation
 test_data = pd.DataFrame()
 test_data['same_words_fraction'] = test.apply(feature_extractor.same_words_fraction, axis=1, raw=True)
 test_data['jacard_similarity'] = test.apply(feature_extractor.get_jaccard_sim, axis=1, raw=True)
+# test_data['fuzz_qratio'] = test.apply(lambda x: fuzz.QRatio(str(x['question1']), str(x['question2'])), axis=1)
+
+# Length features
+length_features = feature_extractor.get_length_features(test)
+test_data['q1_len'] = length_features['q1_len']
+test_data['q2_len'] = length_features['q2_len']
+# test_data['len_diff'] = length_features['len_diff']
 
 # Load the model
 model = xgb.Booster()
@@ -39,4 +43,4 @@ submission.loc[submission.is_duplicate >= 0.5, 'is_duplicate'] = 1
 # Convert to integer
 submission['is_duplicate'] = submission['is_duplicate'].astype(int)
 
-submission.to_csv('single_feature_xgboost.csv', index=False)
+submission.to_csv('simple_features_xgboost.csv', index=False)
