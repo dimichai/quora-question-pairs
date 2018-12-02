@@ -2,9 +2,10 @@ import pandas as pd
 import libs.feature_extractor as feature_extractor
 import libs.data_cleaner as data_cleaner
 import xgboost as xgb
+# from fuzzywuzzy import fuzz
 
 # Predict Kaggle's test set
-test = pd.read_csv('data/test_data.csv')
+test = pd.read_csv('data/test_data.csv')    
 
 # Clean text - remove not needed information.
 test['question1'] = test['question1'].apply(data_cleaner.clean_text)

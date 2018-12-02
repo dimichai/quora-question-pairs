@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 import libs.data_cleaner as data_cleaner
 import libs.feature_extractor as feature_extractor
+# from fuzzywuzzy import fuzz
 
 # Load data
 train = pd.read_csv('data/cleaned/train_data.csv')
@@ -23,6 +24,19 @@ length_features = feature_extractor.get_length_features(train)
 train_data['q1_len'] = length_features['q1_len']
 train_data['q2_len'] = length_features['q2_len']
 # train_data['len_diff'] = length_features['len_diff']
+
+# train_data['fuzz_qratio'] = train.apply(lambda x: fuzz.QRatio(str(x['question1']), str(x['question2'])), axis=1)
+# print('1 out of 7 fuzz features')
+# train_data['fuzz_WRatio'] = train.apply(lambda x: fuzz.WRatio(str(x['question1']), str(x['question2'])), axis=1)
+# train_data['fuzz_partial_ratio'] = train.apply(lambda x: fuzz.partial_ratio(str(x['question1']), str(x['question2'])), axis=1)
+# print('3 out of 7 fuzz features')
+# train_data['fuzz_partial_token_set_ratio'] = train.apply(lambda x: fuzz.partial_token_set_ratio(str(x['question1']), str(x['question2'])), axis=1)
+# train_data['fuzz_partial_token_sort_ratio'] = train.apply(lambda x: fuzz.partial_token_sort_ratio(str(x['question1']), str(x['question2'])), axis=1)
+# print('5 out of 7 fuzz features')
+# train_data['fuzz_token_set_ratio'] = train.apply(lambda x: fuzz.token_set_ratio(str(x['question1']), str(x['question2'])), axis=1)
+# train_data['fuzz_token_sort_ratio'] = train.apply(lambda x: fuzz.token_sort_ratio(str(x['question1']), str(x['question2'])), axis=1)
+# print('7 out of 7 fuzz features')
+
 # # Create Vectors
 # vectors_q1 = train['question1'].apply(feature_extractor.get_vectors)
 # vectors_q2 = train['question2'].apply(feature_extractor.get_vectors)
